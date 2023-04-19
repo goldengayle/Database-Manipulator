@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.4",
+    "inquirer-maxlength-input-prompt": "^1.0.2",
+    "mysql2": "^3.2.0",
+    "dotenv": "^8.2.0"
+  }
+}
