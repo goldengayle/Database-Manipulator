@@ -6,6 +6,8 @@ const MaxLengthInputPrompt = require('inquirer-maxlength-input-prompt')
 inquirer.registerPrompt('maxlength-input', MaxLengthInputPrompt)
 require ("console.table")
 const dbquery = ""
+const roles= []
+const departments=[ "math", "science"]
 
 
 
@@ -22,6 +24,25 @@ const db = mysql.createConnection(
   console.log(`Connected to the cmd_db database.`)
 );
 
+function findroles() {
+  db.query(`SELECT title FROM roles`, (err, result) =>{
+    
+    for (var i = 0; i < result.length; i++) {
+     roles.push(result[i].title)
+    }
+    console.log(roles)
+  })
+}
+
+function finddepartments() {
+  db.query(`SELECT NAME FROM department`, (err, result) =>{
+    console.log(result)
+    for (var i = 0; i < result.length; i++) {
+      departments.push(result[i].NAME)
+     }
+     console.log(departments)
+  })
+}
 
 async function init() {
   await inquirer
@@ -89,22 +110,22 @@ async function init() {
             name: 'role_salary'
           },
           {
-            type: 'maxlength-input',
+            
+            type: 'list',
             message: 'What department is this new role associated with?',
             name: 'role_department',
-            maxLength: 30
+            choices: departments
           }
         ]).then((response)=>{
-            const depid = db.query(`SELECT id FROM department WHERE NAME = "${response.role_department}"`, (err, result)=>{
-              console.log(result)
-            })
-           
-            db.query(`INSERT INTO roles(title,salary, department_id) VALUES("${response.role_name}", ${response.role_salary}, ${depid[0].id}`, (err, result) => {
+             db.query(`SELECT id FROM department WHERE NAME = "${response.role_department}"`, (err, result)=>{
+              db.query(`INSERT INTO roles(title,salary, department_id) VALUES("${response.role_name}", ${response.role_salary}, ${result[0].id})`, (err, result) => {
               if(err){
                 console.log(err);
               }
               console.log("New role title has been added")
-            })
+            })})
+           
+            
           })
         } else if (response.init_prompt === 'add an employee'){
           //next prompt is an idea for how to call the roles in an array and give it choice in the inquirer question. I need to then relate this to the 
@@ -141,6 +162,8 @@ async function init() {
 
 
 
+findroles();
+finddepartments();      
 init();
 
 
