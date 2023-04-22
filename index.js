@@ -6,7 +6,7 @@ const MaxLengthInputPrompt = require('inquirer-maxlength-input-prompt')
 inquirer.registerPrompt('maxlength-input', MaxLengthInputPrompt)
 require ("console.table")
 const dbquery = ""
-const roles= []
+const roless= []
 const departments=[ "math", "science"]
 
 
@@ -28,19 +28,18 @@ function findroles() {
   db.query(`SELECT title FROM roles`, (err, result) =>{
     
     for (var i = 0; i < result.length; i++) {
-     roles.push(result[i].title)
+     roless.push(result[i].title)
     }
-    console.log(roles)
+    
   })
 }
 
 function finddepartments() {
   db.query(`SELECT NAME FROM department`, (err, result) =>{
-    console.log(result)
     for (var i = 0; i < result.length; i++) {
       departments.push(result[i].NAME)
      }
-     console.log(departments)
+     
   })
 }
 
@@ -59,6 +58,7 @@ async function init() {
               console.log(err);
             }
             console.table(result);
+            again(),
           })
 
 
@@ -68,6 +68,7 @@ async function init() {
               console.log(err);
             }
             console.table(result);
+            again(),
 
           })
         } else if (response.init_prompt === 'view all employees') {
@@ -76,6 +77,7 @@ async function init() {
               console.log(err);
             }
             console.table(result);
+            again(),
 
           })
         } else if (response.init_prompt === 'add a department') {
@@ -90,6 +92,7 @@ async function init() {
                   console.log(err);
                 }
                 console.log("Department has been added");
+                again()
           })
             
           })
@@ -123,6 +126,7 @@ async function init() {
                 console.log(err);
               }
               console.log("New role title has been added")
+              again(),
             })})
            
             
@@ -142,24 +146,51 @@ async function init() {
             name: 'emp_lname',
             maxLength: 30
           },
+          {
+            type: 'list' ,
+            message: 'What role does this person have?',
+            name: 'emp_role',
+            choices: roless
+          }
         ]).then((response)=>{
            //substituted values for role_id and manager_id. Fix when I can.
-            db.query(`INSERT INTO emploee(emp_fname,emp_lname) VALUES("${response.emp_fname}", ${response.emp_lname}, 1, 1`, (err, result) => {
+           db.query(`SELECT id FROM roles WHERE title = "${response.emp_role}"`, (err, result)=>{
+            db.query(`INSERT INTO employee(first_name,last_name, role_id) VALUES("${response.emp_fname}", "${response.emp_lname}", ${result[0].id})`, (err, result) => {
               if(err){
                 console.log(err);
               }
               console.log("New employee has been added")
+              again(),
             })
           })
 
-          }
-        })}
+          })
+        } else if (response.init_prompt === 'update an employee role'){
+          
+        }
+      
+    })}
       //})*/
     
 
 
 
-
+function again(){
+  inquirer.prompt([{
+    type: 'list' ,
+    message: 'Would you like to complete another task?',
+    name: 'taskagain',
+    choices: ['yes', 'no']
+  }])
+  .then((response)=>{
+    if(response.taskagain === 'yes'){
+      init();
+    } if (response.taskagain ==='no'){
+      console.log('Have a nice day!');
+      return
+    }
+  })
+}
 
 
 findroles();

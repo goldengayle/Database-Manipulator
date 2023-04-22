@@ -34,8 +34,8 @@ CREATE TABLE employee(
     REFERENCES roles(id)
     ON DELETE SET NULL,
 
-    FOREIGN KEY(manager_id)
+    /*FOREIGN KEY(manager_id)
     REFERENCES employee(id)
-    ON DELETE SET NULL
+    ON DELETE SET NULL*/
 
 )
