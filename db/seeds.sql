@@ -21,7 +21,7 @@ VALUES
 (10, "Senior Math Teacher", 20000, 4);
 
 
-INSERT INTO employee( id, first_name, last_name, role_id, manager_id)
+INSERT INTO employees( id, first_name, last_name, role_id, manager_id)
 VALUES
 (1, "Gayle", "Lennox",1, 1),
 (2, "Maureen", "Kenny", 2, 2),

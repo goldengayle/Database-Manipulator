@@ -49,7 +49,7 @@ function finddepartments() {
 
 //renders current employees into array for list options
 function findEmployees() {
-  db.query(`SELECT last_name FROM employee`, (err, result) => {
+  db.query(`SELECT last_name FROM employees`, (err, result) => {
     for (var i = 0; i < result.length; i++) {
       employees.push(result[i].last_name)
     }
@@ -88,7 +88,7 @@ async function init() {
 
         })
       } else if (response.init_prompt === 'view all employees') {
-        db.query("SELECT * FROM employee", (err, result) => {
+        db.query("SELECT * FROM employees", (err, result) => {
           if (err) {
             console.log(err);
           }
@@ -171,7 +171,7 @@ async function init() {
         ]).then((response) => {
          
           db.query(`SELECT id FROM roles WHERE title = "${response.emp_role}"`, (err, result) => {
-            db.query(`INSERT INTO employee(first_name,last_name, role_id) VALUES("${response.emp_fname}", "${response.emp_lname}", ${result[0].id})`, (err, result) => {
+            db.query(`INSERT INTO employees(first_name,last_name, role_id) VALUES("${response.emp_fname}", "${response.emp_lname}", ${result[0].id})`, (err, result) => {
               if (err) {
                 console.log(err);
               }
@@ -195,7 +195,7 @@ async function init() {
           choices: roless
         }
         ]).then((response) => {
-          db.query(`SELECT id FROM employee WHERE last_name ="${response.update_emp}"`, (err, result) => {
+          db.query(`SELECT id FROM employees WHERE last_name ="${response.update_emp}"`, (err, result) => {
             console.log(result[0].id);
             update_emp = result[0].id;
             console.log(update_emp)
@@ -203,7 +203,7 @@ async function init() {
           db.query(`SELECT id FROM roles WHERE title ="${response.update_new_role}"`, (err, result) => {
             update_new_role = result[0].id;
         
-            db.query(`UPDATE employee SET role_id = ${update_new_role} WHERE id = ${update_emp}`, (err, result) => {
+            db.query(`UPDATE employees SET role_id = ${update_new_role} WHERE id = ${update_emp}`, (err, result) => {
               if (err) {
                 console.log(err)
               }

@@ -22,7 +22,7 @@ CREATE TABLE roles(
     ON DELETE SET NULL
 );
 
-CREATE TABLE employee(
+CREATE TABLE employees(
     id INT NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
@@ -32,10 +32,6 @@ CREATE TABLE employee(
 
     FOREIGN KEY(role_id)
     REFERENCES roles(id)
-    ON DELETE SET NULL,
-
-    /*FOREIGN KEY(manager_id)
-    REFERENCES employee(id)
-    ON DELETE SET NULL*/
+    ON DELETE SET NULL
 
 )
