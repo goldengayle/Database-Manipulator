@@ -30,5 +30,5 @@ VALUES
 (5, "Doug", "Siegal", 1, 5),
 (6, "Erin", "Mahoney", 10, 6),
 (7, "Nancy", "Abens", 8, 7),
-(8, "Sarah", "Bestor", 9, 8),
-(9, "Patrick", "Patrick",5, 9);
+(8, "Barbara", "Brown", 4, 8),
+(9, "Patrick", "McGee-Jenks",5, 9);

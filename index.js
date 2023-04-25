@@ -5,7 +5,8 @@ const inquirer = require('inquirer')
 const MaxLengthInputPrompt = require('inquirer-maxlength-input-prompt')
 inquirer.registerPrompt('maxlength-input', MaxLengthInputPrompt)
 require("console.table")
-const dbquery = ""
+
+//global values defined
 const roless = []
 const departments = []
 const employees = []
@@ -25,6 +26,7 @@ const db = mysql.createConnection(
   console.log(`Connected to the cmd_db database.`)
 );
 
+//renders current roles into array for list options
 function findroles() {
   db.query(`SELECT title FROM roles`, (err, result) => {
 
@@ -35,6 +37,7 @@ function findroles() {
   })
 }
 
+//renders current departments into array for list options
 function finddepartments() {
   db.query(`SELECT NAME FROM department`, (err, result) => {
     for (var i = 0; i < result.length; i++) {
@@ -44,6 +47,7 @@ function finddepartments() {
   })
 }
 
+//renders current employees into array for list options
 function findEmployees() {
   db.query(`SELECT last_name FROM employee`, (err, result) => {
     for (var i = 0; i < result.length; i++) {
@@ -53,6 +57,7 @@ function findEmployees() {
   })
 }
 
+//main function
 async function init() {
   await inquirer
     .prompt([{
@@ -144,7 +149,6 @@ async function init() {
 
         })
       } else if (response.init_prompt === 'add an employee') {
-        //next prompt is an idea for how to call the roles in an array and give it choice in the inquirer question. I need to then relate this to the 
 
         inquirer.prompt([{
           type: 'maxlength-input',
@@ -165,7 +169,7 @@ async function init() {
           choices: roless
         }
         ]).then((response) => {
-          //substituted values for role_id and manager_id. Fix when I can.
+         
           db.query(`SELECT id FROM roles WHERE title = "${response.emp_role}"`, (err, result) => {
             db.query(`INSERT INTO employee(first_name,last_name, role_id) VALUES("${response.emp_fname}", "${response.emp_lname}", ${result[0].id})`, (err, result) => {
               if (err) {
@@ -197,13 +201,8 @@ async function init() {
             console.log(update_emp)
           })
           db.query(`SELECT id FROM roles WHERE title ="${response.update_new_role}"`, (err, result) => {
-            console.log(result[0].id);
             update_new_role = result[0].id;
-            console.log(update_new_role)
-          /*})
-          .then(() => {*/
-            console.log("line 204", update_emp)
-            console.log("line 205", update_new_role)
+        
             db.query(`UPDATE employee SET role_id = ${update_new_role} WHERE id = ${update_emp}`, (err, result) => {
               if (err) {
                 console.log(err)
@@ -223,7 +222,7 @@ async function init() {
 
 
 
-
+// function is called after all queries are complete. If user wants another query, the init function will run again. If not, the application will exit
 function again() {
   inquirer.prompt([{
     type: 'list',
@@ -241,7 +240,7 @@ function again() {
     })
 }
 
-
+// Array creating functions are started and inquirer prompting is initialized
 findroles();
 finddepartments();
 findEmployees();
