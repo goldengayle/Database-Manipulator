@@ -5,7 +5,7 @@ This project is a command-line database manager using SQL to create, update, and
 ## Usage
 AS A USER I want to keep track of employees in different roles and departments in a high school setting.
 <img src="Screenshot.png" alt="screenshot of application">
-  <a href= "https://drive.google.com/file/d/1mIhwfCKPpSGla_orYhxqc2HyiJb2Qs4o/view"> Link for video Explanation </a>
+  <a href= "https://drive.google.com/file/d/1onW7wMRUT8azETbmpnDtjQKkXoqQHHiI/view"> Link for video Explanation </a>
 
 
 ## Installation
