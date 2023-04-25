@@ -49,7 +49,7 @@ function findEmployees() {
     for (var i = 0; i < result.length; i++) {
       employees.push(result[i].last_name)
     }
-    console.log(employees)
+    
   })
 }
 
